@@ -1,0 +1,55 @@
+### Variables
+@baseUrl = https://localhost:5001
+@userId = 1
+
+### Create a new marker
+POST {{baseUrl}}/api/v1/markers
+Content-Type: application/json
+X-User-Id: {{userId}}
+
+{
+  "name": "Deer Sighting",
+  "category": 2,
+  "latitude": 45.5231,
+  "longitude": -93.2467,
+  "description": "Large buck spotted near the oak tree"
+}
+
+### Create another marker
+POST {{baseUrl}}/api/v1/markers
+Content-Type: application/json
+X-User-Id: {{userId}}
+
+{
+  "name": "Weather Station",
+  "category": 4,
+  "latitude": 45.5189,
+  "longitude": -93.2501,
+  "description": "Temperature and humidity monitoring station"
+}
+
+### Get all markers
+GET {{baseUrl}}/api/v1/markers
+X-User-Id: {{userId}}
+
+### Get markers by category
+GET {{baseUrl}}/api/v1/markers?category=2
+X-User-Id: {{userId}}
+
+### Get specific marker (replace with actual ID from create response)
+GET {{baseUrl}}/api/v1/markers/marker_123456789
+X-User-Id: {{userId}}
+
+### Update marker (replace with actual ID)
+PATCH {{baseUrl}}/api/v1/markers/marker_123456789
+Content-Type: application/json
+X-User-Id: {{userId}}
+
+{
+  "name": "Updated Deer Sighting",
+  "description": "Large 8-point buck spotted near the oak tree at dawn"
+}
+
+### Delete marker (replace with actual ID)
+DELETE {{baseUrl}}/api/v1/markers/marker_123456789
+X-User-Id: {{userId}}
