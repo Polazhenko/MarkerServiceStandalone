@@ -35,6 +35,19 @@ public class MarkerServiceTests
             Description = "Test description"
         };
         var userId = 1;
+
+        var marker = new Marker
+        {
+            Name = request.Name,
+            Category = request.Category,
+            CreatedAt = DateTime.UtcNow,
+            Description = request.Description,
+            Id = "General_v1.0_123",
+            Latitude = request.Latitude,
+            Longitude = request.Longitude,
+            UserId = userId
+        };
+
         var expectedResponse = new MarkerResponse
         {
             Id = "General_v1.0_123",
@@ -47,6 +60,8 @@ public class MarkerServiceTests
 
         _mockRepository.Setup(r => r.CreateAsync(It.IsAny<Marker>()))
             .ReturnsAsync((Marker m) => m);
+        _mockMapper.Setup(m => m.Map<Marker>(request))
+            .Returns(marker);
         _mockMapper.Setup(m => m.Map<MarkerResponse>(It.IsAny<Marker>()))
             .Returns(expectedResponse);
 

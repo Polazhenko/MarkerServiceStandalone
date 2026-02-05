@@ -1,5 +1,5 @@
 ### Variables
-@baseUrl = https://localhost:5001
+@baseUrl = http://localhost:59817
 @userId = 1
 
 ### Create a new marker

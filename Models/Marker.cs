@@ -4,10 +4,11 @@ namespace MarkerServiceStandalone.Models;
 
 public enum MarkerCategory
 {
+    All,
     General = 1,
-    Category2 = 2,
-    Category3 = 3,
-    Category4 = 4
+    GroupCategory1_Marker1 = 2,
+    GroupCategory1_Marker2 = 3,
+    GroupCategory2_Marker1 = 4,
 }
 
 public class Marker
@@ -15,11 +16,11 @@ public class Marker
     public string Id { get; set; } = string.Empty;
     public int UserId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public MarkerCategory Category { get; set; }
+    public MarkerCategory Category { get; set; } = MarkerCategory.General;
     public float Latitude { get; set; }
     public float Longitude { get; set; }
     public string? Description { get; set; }
-    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; } = DateTimeOffset.Now;
     public DateTimeOffset UpdatedAt { get; set; }
 }
 

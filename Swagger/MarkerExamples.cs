@@ -12,7 +12,7 @@ public class CreateMarkerRequestExample : IExamplesProvider<CreateMarkerRequest>
         return new ()
         {
             Name = "Deer Sighting",
-            Category = MarkerCategory.Category2,
+            Category = MarkerCategory.General,
             Latitude = 45.5231f,
             Longitude = -93.2467f,
             Description = "Large buck spotted near the oak tree"
@@ -40,7 +40,7 @@ public class MarkerResponseExample : IExamplesProvider<MarkerResponse>
         {
             Id = "marker_123456789",
             Name = "Deer Sighting",
-            Category = MarkerCategory.Category2,
+            Category = MarkerCategory.GroupCategory2_Marker1,
             Latitude = 45.5231f,
             Longitude = -93.2467f,
             Description = "Large buck spotted near the oak tree",
@@ -60,7 +60,7 @@ public class MarkerListResponseExample : IExamplesProvider<List<MarkerResponse>>
             {
                 Id = "marker_123456789",
                 Name = "Deer Sighting",
-                Category = MarkerCategory.Category2,
+                Category = MarkerCategory.GroupCategory1_Marker2,
                 Latitude = 45.5231f,
                 Longitude = -93.2467f,
                 Description = "Large buck spotted near the oak tree",
@@ -71,7 +71,7 @@ public class MarkerListResponseExample : IExamplesProvider<List<MarkerResponse>>
             {
                 Id = "marker_987654321",
                 Name = "Weather Station",
-                Category = MarkerCategory.Category4,
+                Category = MarkerCategory.GroupCategory2_Marker1,
                 Latitude = 45.5189f,
                 Longitude = -93.2501f,
                 Description = "Temperature and humidity monitoring station",

@@ -70,9 +70,9 @@ public class InMemoryMarkerRepositoryTests
     public async Task GetAllAsync_ShouldReturnUserMarkers_FilteredByCategory()
     {
         // Arrange
-        await _repository.CreateAsync(new Marker { UserId = 1, Category = MarkerCategory.General });
-        await _repository.CreateAsync(new Marker { UserId = 1, Category = MarkerCategory.Category2 });
-        await _repository.CreateAsync(new Marker { UserId = 2, Category = MarkerCategory.General });
+        await _repository.CreateAsync(new Marker { UserId = 1, Id = "General_v1.0_123", Category = MarkerCategory.General });
+        await _repository.CreateAsync(new Marker { UserId = 1, Id = "GroupCategory1_Marker2_v1.0_1343", Category = MarkerCategory.GroupCategory1_Marker2 });
+        await _repository.CreateAsync(new Marker { UserId = 2, Id = "General_v1.0_12323", Category = MarkerCategory.General });
 
         // Act
         var result = await _repository.GetByCategoryAsync(1, MarkerCategory.General);

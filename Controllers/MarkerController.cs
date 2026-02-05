@@ -51,7 +51,7 @@ public class MarkerController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MarkerResponse>>> GetAllMarkers(
+    public async Task<ActionResult<ICollection<MarkerResponse>>> GetAllMarkers(
         [FromHeader(Name = "X-User-Id")] int userId,
         [FromQuery] MarkerCategory? category = null)
     {

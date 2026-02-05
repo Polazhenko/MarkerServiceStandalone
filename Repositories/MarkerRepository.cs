@@ -1,6 +1,7 @@
 using MarkerServiceStandalone.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,71 +19,72 @@ public interface IMarkerRepository
 
 public class InMemoryMarkerRepository : IMarkerRepository
 {
-    private readonly List<Marker> _markers = new();
-    private readonly object _lock = new();
+    private readonly ConcurrentDictionary<int, ConcurrentDictionary<string, Marker>> _markers = new();
+    private static readonly IEnumerable<Marker> EmptyMarkerList = new List<Marker>().AsEnumerable();
 
     public Task<Marker?> GetByIdAsync(string id, int userId)
     {
-        lock (_lock)
+        Marker? retVal = null;
+
+        if (_markers.TryGetValue(userId, out var userMarkers) &&
+            userMarkers.TryGetValue(id, out retVal))
         {
-            return Task.FromResult(_markers.FirstOrDefault(m => m.Id == id && m.UserId == userId));
+            return Task.FromResult(retVal);
         }
+
+        return Task.FromResult(retVal);
     }
 
     public Task<IEnumerable<Marker>> GetByUserIdAsync(int userId)
     {
-        lock (_lock)
-        {
-            return Task.FromResult(_markers.Where(m => m.UserId == userId).AsEnumerable());
-        }
+        return GetByCategoryAsync(userId, null);
     }
 
     public Task<IEnumerable<Marker>> GetByCategoryAsync(int userId, MarkerCategory? category)
     {
-        lock (_lock)
-        {
-            var query = _markers.Where(m => m.UserId == userId);
-            if (category.HasValue)
-                query = query.Where(m => m.Category == category.Value);
-            return Task.FromResult(query.AsEnumerable());
-        }
+        if (!_markers.TryGetValue(userId, out var userMarkers))
+            return Task.FromResult(EmptyMarkerList);
+
+        if (category == null)
+            return Task.FromResult(userMarkers.Values.AsEnumerable());
+
+        return Task.FromResult(userMarkers.Values.Where(m => m.Category == category).ToArray().AsEnumerable());
     }
 
     public Task<Marker> CreateAsync(Marker marker)
     {
-        lock (_lock)
+        if (!_markers.TryGetValue(marker.UserId, out var userMarkers))
         {
-            _markers.Add(marker);
-            return Task.FromResult(marker);
+            userMarkers = new();
+            _markers[marker.UserId] = userMarkers; 
         }
+
+        userMarkers[marker.Id] = marker; 
+        return Task.FromResult(marker);
     }
 
     public Task<Marker?> UpdateAsync(Marker marker)
     {
-        lock (_lock)
-        {
-            var existing = _markers.FirstOrDefault(m => m.Id == marker.Id && m.UserId == marker.UserId);
-            if (existing == null) return Task.FromResult<Marker?>(null);
+        var existing = GetByIdAsync(marker.Id, marker.UserId).Result;
+        if (existing == null) return Task.FromResult<Marker?>(null);
 
-            existing.Name = marker.Name;
-            existing.Category = marker.Category;
-            existing.Latitude = marker.Latitude;
-            existing.Longitude = marker.Longitude;
-            existing.Description = marker.Description;
-            existing.UpdatedAt = DateTime.UtcNow;
+        existing.Name = marker.Name;
+        existing.Category = marker.Category;
+        existing.Latitude = marker.Latitude;
+        existing.Longitude = marker.Longitude;
+        existing.Description = marker.Description;
+        existing.UpdatedAt = DateTime.UtcNow;
 
-            return Task.FromResult<Marker?>(existing);
-        }
+        return Task.FromResult<Marker?>(existing);
     }
 
     public Task<bool> DeleteAsync(string id, int userId)
     {
-        lock (_lock)
+        if (_markers.TryGetValue(userId, out var userMarkers))
         {
-            var marker = _markers.FirstOrDefault(m => m.Id == id && m.UserId == userId);
-            if (marker == null) return Task.FromResult(false);
-            _markers.Remove(marker);
-            return Task.FromResult(true);
+            return Task.FromResult(userMarkers.Remove(id, out var marker));
         }
+
+        return Task.FromResult(false);
     }
 }

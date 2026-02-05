@@ -18,33 +18,18 @@ public interface IMarkerService
     Task<bool> DeleteMarkerAsync(int userId, string markerId);
 }
 
-public class MarkerService : IMarkerService
+public class MarkerService(IMarkerRepository repository, IMapper mapper, ILogger<MarkerService> logger) : IMarkerService
 {
-    private readonly IMarkerRepository _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<MarkerService> _logger;
-
-    public MarkerService(IMarkerRepository repository, IMapper mapper, ILogger<MarkerService> logger)
-    {
-        _repository = repository;
-        _mapper = mapper;
-        _logger = logger;
-    }
+    private readonly IMarkerRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
+    private readonly ILogger<MarkerService> _logger = logger;
 
     public async Task<MarkerResponse> CreateMarkerAsync(int userId, CreateMarkerRequest request)
     {
-        var marker = new Marker
-        {
-            Id = GenerateMarkerId(request.Category),
-            UserId = userId,
-            Name = request.Name,
-            Category = request.Category,
-            Latitude = request.Latitude,
-            Longitude = request.Longitude,
-            Description = request.Description,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
-        };
+        var marker = _mapper.Map<Marker>(request);
+
+        marker.Id = GenerateMarkerId(request.Category);
+        marker.CreatedAt = DateTime.UtcNow;
 
         await _repository.CreateAsync(marker);
         _logger.LogInformation("Created marker {MarkerId} for user {UserId}", marker.Id, userId);
@@ -70,7 +55,8 @@ public class MarkerService : IMarkerService
         if (existing == null) return null;
 
         if (request.Name != null) existing.Name = request.Name;
-        if (request.Category.HasValue) existing.Category = request.Category.Value;
+        // category cannot be changed
+        // if (request.Category.HasValue) existing.Category = request.Category.Value;
         if (request.Latitude.HasValue) existing.Latitude = request.Latitude.Value;
         if (request.Longitude.HasValue) existing.Longitude = request.Longitude.Value;
         if (request.Description != null) existing.Description = request.Description;
