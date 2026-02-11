@@ -9,7 +9,7 @@ X-User-Id: {{userId}}
 
 {
   "name": "Deer Sighting",
-  "category": 2,
+  "category": "General",
   "latitude": 45.5231,
   "longitude": -93.2467,
   "description": "Large buck spotted near the oak tree"

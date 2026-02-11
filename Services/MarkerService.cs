@@ -30,6 +30,8 @@ public class MarkerService(IMarkerRepository repository, IMapper mapper, ILogger
 
         marker.Id = GenerateMarkerId(request.Category);
         marker.CreatedAt = DateTime.UtcNow;
+        // Ensure the marker is associated with the creating user
+        marker.UserId = userId;
 
         await _repository.CreateAsync(marker);
         _logger.LogInformation("Created marker {MarkerId} for user {UserId}", marker.Id, userId);
