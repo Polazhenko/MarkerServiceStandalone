@@ -82,7 +82,6 @@ public class InMemoryMarkerRepository : IMarkerRepository
     {
         if (_markers.TryGetValue(userId, out var userMarkers))
         {
-            // ConcurrentDictionary does not have Remove; use TryRemove
             return Task.FromResult(userMarkers.TryRemove(id, out var _));
         }
 

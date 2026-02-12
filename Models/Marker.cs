@@ -1,6 +1,8 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace MarkerServiceStandalone.Models;
+
 
 public enum MarkerCategory
 {
@@ -27,7 +29,10 @@ public class Marker
 public record CreateMarkerRequest
 {
     public string Name { get; set; } = string.Empty;
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public MarkerCategory Category { get; set; }
+
     public float Latitude { get; set; }
     public float Longitude { get; set; }
     public string? Description { get; set; }
@@ -36,7 +41,10 @@ public record CreateMarkerRequest
 public record UpdateMarkerRequest
 {
     public string? Name { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public MarkerCategory? Category { get; set; }
+
     public float? Latitude { get; set; }
     public float? Longitude { get; set; }
     public string? Description { get; set; }
