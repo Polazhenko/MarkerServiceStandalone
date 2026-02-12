@@ -41,7 +41,7 @@ GET {{baseUrl}}/api/v1/markers/marker_123456789
 X-User-Id: {{userId}}
 
 ### Update marker (replace with actual ID)
-PATCH {{baseUrl}}/api/v1/markers/marker_123456789
+PATCH {{baseUrl}}/api/v1/markers/General_v1.0_1770893188
 Content-Type: application/json
 X-User-Id: {{userId}}
 

@@ -1,10 +1,29 @@
 import { test, expect } from '@playwright/test';
 
-const baseURL = process.env.BASE_URL ?? 'http://localhost:59817';
+const baseURL = process.env.BASE_URL ?? 'https://localhost:59817';
+
+// Wait for the API to be reachable before running requests to avoid "socket hang up"
+async function waitForServer(request: any, url: string, retries = 30, delayMs = 500) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      // Try a lightweight GET to the root; server may return 404 but connection succeeded
+      const res = await request.get(url, { timeout: 1000 });
+      // If we got a response (any status), server is up
+      if (res) return;
+    } catch (err) {
+      // swallow and retry
+    }
+    await new Promise(r => setTimeout(r, delayMs));
+  }
+  throw new Error(`Server ${url} not reachable after ${retries} attempts`);
+}
 
 test.describe('MarkerServiceStandalone API (end-to-end)', () => {
   test('create ? get ? delete ? not found', async ({ request }) => {
     const headers = { 'X-User-Id': '42' };
+
+    // Ensure the API is up before issuing requests
+    await waitForServer(request, baseURL);
 
     // Create marker
     const createPayload = {

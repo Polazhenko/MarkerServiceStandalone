@@ -38,13 +38,16 @@ public record CreateMarkerRequest
     public string? Description { get; set; }
 }
 
+
+public record SearchMarkerRequest
+{
+    public string? Name { get; set; }
+}
+
+
 public record UpdateMarkerRequest
 {
     public string? Name { get; set; }
-
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public MarkerCategory? Category { get; set; }
-
     public float? Latitude { get; set; }
     public float? Longitude { get; set; }
     public string? Description { get; set; }
@@ -54,7 +57,10 @@ public record MarkerResponse
 {
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public MarkerCategory Category { get; set; }
+
     public float Latitude { get; set; }
     public float Longitude { get; set; }
     public string? Description { get; set; }

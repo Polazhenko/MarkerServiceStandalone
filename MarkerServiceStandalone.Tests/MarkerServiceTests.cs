@@ -97,6 +97,28 @@ public class MarkerServiceTests
     }
 
     [Fact]
+    public async Task SearchMarkerAsync_Positive()
+    {
+        // Arrange
+        var markerId = "test-id";
+        var userId = 1;
+        var marker = new Marker { Id = markerId, UserId = userId, Name = "Test" };
+        var expectedResponse = new MarkerResponse { Id = markerId, Name = "Test" };
+
+        _mockRepository.Setup(r => r.GetByIdAsync(markerId, userId))
+            .ReturnsAsync(marker);
+        _mockMapper.Setup(m => m.Map<MarkerResponse>(marker))
+            .Returns(expectedResponse);
+
+        // Act
+        var result = await _service.GetMarkerAsync(userId, markerId);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(markerId, result.Id);
+    }
+
+    [Fact]
     public async Task GetMarkerAsync_ShouldReturnNull_WhenNotExists()
     {
         // Arrange

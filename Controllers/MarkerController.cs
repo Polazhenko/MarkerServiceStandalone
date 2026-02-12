@@ -38,6 +38,27 @@ public class MarkerController : ControllerBase
         }
     }
 
+    [HttpPost("search")]
+    public async Task<ActionResult<MarkerResponse>> SearchMarkers(
+        [FromHeader(Name = "X-User-Id")] int userId,
+        [FromBody] SearchMarkerRequest request)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                return BadRequest(new { error = "Name field should contain substring to search" });
+
+            var result = await _markerService.SearchMarkersAsync(userId, request);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating marker for user {UserId}", userId);
+            return BadRequest(new { error = ex.Message });
+        }
+    }
+
+
     [HttpGet("{markerId}")]
     public async Task<ActionResult<MarkerResponse>> GetMarker(
         [FromHeader(Name = "X-User-Id")] int userId,
