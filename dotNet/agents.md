@@ -5,7 +5,7 @@ This document documents the `MarkerServiceStandalone` project for automation age
 ## Project overview
 
 - Purpose: simple marker management API (create, read, update, delete) used for demos and end-to-end tests.
-- Tech stack: .NET 8 (C# 12), ASP.NET Core Web API, AutoMapper, in-memory repository, xUnit tests, Playwright for E2E HTTP tests.
+- Tech stack: .NET 8 (C# 12), ASP.NET Core Web API, AutoMapper, in-memory repository, xUnit tests.
 
 ## Structure (key files)
 
@@ -45,35 +45,15 @@ Request/response DTOs are in `Models/Marker.cs`.
 
 - `Program` contains top-level statements. A `public partial class Program { }` is present to allow test hosts to locate the `Program` type for integration tests.
 
-## Playwright tests
-
-- Default base URL used by Playwright tests is `http://localhost:59817`. Override with `BASE_URL` environment variable.
-- To reduce flaky "socket hang up" errors, either use Playwright `webServer` to start the .NET app or add a small readiness probe in tests (the repo includes a helper that retries a `GET` to the base URL).
-- Example `webServer` config (in `playwright.config.ts`):
-
-```
-webServer: {
-  command: 'dotnet run --project ./MarkerServiceStandalone/MarkerServiceStandalone.csproj --urls http://localhost:59817',
-  port: 59817,
-  timeout: 120000,
-  reuseExistingServer: !process.env.CI,
-}
-```
-
 ## Debugging tips
 
-- If `socket hang up` occurs in Playwright, verify the API is listening on the expected port (`netstat` / `ss`) or use `curl -v` to reproduce.
-- If JSON (de)serialization fails for enums, check converter attributes and `Program.cs` JSON options. Use `JsonStringEnumConverter` when you need string names.
 - To debug tests that use `WebApplicationFactory<Program>`, ensure `Program` is discoverable (the `partial` class stub exists) and the test host can construct the app.
 
 ## Known fixes included in the repo
 
-- Replaced incorrect `ConcurrentDictionary.Remove` usage with `TryRemove` in `Repositories/MarkerRepository.cs`.
-- Ensure `marker.UserId` is set on creation in `Services/MarkerService.cs`.
 - Added per-property `JsonStringEnumConverter` for `CreateMarkerRequest.Category` to accept string names in incoming JSON.
-- Added a lightweight server readiness probe in Playwright tests to avoid connection race conditions.
 
 ## Contributing / extending
 
 - To persist data beyond process lifetime, replace `InMemoryMarkerRepository` with a DB-backed implementation and register it in `Program.cs`.
-- Consider adding a `Health` endpoint (e.g. `/health`) to improve readiness checks used by Playwright and CI.
+- Consider adding a `Health` endpoint (e.g. `/health`) to improve readiness checks used by CI.
