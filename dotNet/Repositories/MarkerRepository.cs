@@ -15,33 +15,12 @@ public interface IMarkerRepository
     Task<Marker> CreateAsync(Marker marker);
     Task<Marker?> UpdateAsync(Marker marker);
     Task<bool> DeleteAsync(string id, int userId);
-    Task<IEnumerable<Marker>> SearchAsync(int userId, SearchMarkerRequest request);
 }
 
 public class InMemoryMarkerRepository : IMarkerRepository
 {
     private readonly ConcurrentDictionary<int, ConcurrentDictionary<string, Marker>> _markers = new();
     private static readonly IEnumerable<Marker> EmptyMarkerList = new List<Marker>().AsEnumerable();
-
-    // private static readonly List<Marker> EmptyMarkerList = new();
-
-    public async Task<IEnumerable<Marker>> SearchAsync(int userId, SearchMarkerRequest request)
-    {
-        List<Marker> results = new();
-
-        foreach (var user in _markers.Keys)
-        {
-            _markers[user].Values.ToList().ForEach(m =>
-            {
-                if (m.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase))
-                {
-                    results.Add(m);
-                }
-            });
-        }
-
-        return results;
-    }
 
     public Task<Marker?> GetByIdAsync(string id, int userId)
     {

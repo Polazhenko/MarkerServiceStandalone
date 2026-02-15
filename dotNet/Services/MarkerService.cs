@@ -12,7 +12,6 @@ namespace MarkerServiceStandalone.Services;
 public interface IMarkerService
 {
     Task<MarkerResponse> CreateMarkerAsync(int userId, CreateMarkerRequest request);
-    Task<IEnumerable<MarkerResponse>> SearchMarkersAsync(int userId, SearchMarkerRequest request);
     Task<MarkerResponse?> GetMarkerAsync(int userId, string markerId);
     Task<IEnumerable<MarkerResponse>> GetAllMarkersAsync(int userId, MarkerCategory? category = null);
     Task<MarkerResponse?> UpdateMarkerAsync(int userId, string markerId, UpdateMarkerRequest request);
@@ -39,12 +38,6 @@ public class MarkerService(IMarkerRepository repository, IMapper mapper, ILogger
 
         return _mapper.Map<MarkerResponse>(marker);
     }
-
-    public async Task<IEnumerable<MarkerResponse>> SearchMarkersAsync(int userId, SearchMarkerRequest request)
-    {
-        return _mapper.Map<IEnumerable<MarkerResponse>>(await _repository.SearchAsync(userId, request));
-    }
-
 
     public async Task<MarkerResponse?> GetMarkerAsync(int userId, string markerId)
     {
