@@ -19,10 +19,10 @@
 
 **Purpose**: Project structure, dependencies, build system
 
-- [ ] T001 Create Go module and basic project structure with go.mod, go.sum, main.go, models/, handlers/, repository/, service/, tests/ directories per plan.md
-- [ ] T002 [P] Initialize dependencies: add github.com/gin-gonic/gin, github.com/swaggo/swag, github.com/swaggo/gin-swagger, github.com/stretchr/testify to go.mod
-- [ ] T003 [P] Create Makefile with targets: build, test, test-race, run, clean for project development
-- [ ] T004 Create README.md with project overview, setup instructions, running the service, and API usage examples
+- [x] T001 Create Go module and basic project structure with go.mod, go.sum, main.go, models/, handlers/, repository/, service/, tests/ directories per plan.md
+- [x] T002 [P] Initialize dependencies: add github.com/gin-gonic/gin, github.com/swaggo/swag, github.com/swaggo/gin-swagger, github.com/stretchr/testify to go.mod
+- [x] T003 [P] Create Makefile with targets: build, test, test-race, run, clean for project development
+- [x] T004 Create README.md with project overview, setup instructions, running the service, and API usage examples
 
 ---
 
@@ -32,18 +32,18 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T005 Create models/errors.go defining Error and ErrorResponse types for API error responses in handler.go
-- [ ] T006 Create models/marker.go defining MarkerCategory enum (General, GroupCategory1_Marker1, GroupCategory1_Marker2, GroupCategory2_Marker1) and string conversion helpers
-- [ ] T007 Create models/marker.go with Marker struct (id, userId, name, category, latitude, longitude, description, createdAt, updatedAt) matching data-model.md specification
-- [ ] T008 Create models/marker.go with CreateMarkerRequest, UpdateMarkerRequest, MarkerResponse structs with JSON tags and validation constraints from spec.md
-- [ ] T009 Create repository/marker_repository.go interface IMarkerRepository with methods: CreateAsync, GetByIdAsync, GetByCategoryAsync, UpdateAsync, DeleteAsync per data-model.md
-- [ ] T010 Create repository/marker_repository.go InMemoryMarkerRepository implementation using map[int64]map[string]Marker with sync.RWMutex for thread-safe access per data-model.md
-- [ ] T011 Create service/marker_service.go interface IMarkerService with methods: CreateMarkerAsync, GetMarkerAsync, GetAllMarkersAsync, UpdateMarkerAsync, DeleteMarkerAsync per spec.md endpoints
-- [ ] T012 Implement marker ID generation in service/marker_service.go: format "{Category}_v1.0_{UnixTimestamp}" using time.Now().Unix() per research.md decision #3
-- [ ] T013 Create handlers/middleware.go with ExtractUserID middleware to parse X-User-Id header, validate positive integer, and inject into request context
-- [ ] T014 Create handlers/marker_handler.go with HTTP handler functions: CreateMarker, GetMarker, GetAllMarkers, UpdateMarker, DeleteMarker matching API contract in contracts/markers.openapi.yaml
-- [ ] T015 Create handlers/swagger_handler.go to serve Swagger UI at /swagger using swaggo/gin-swagger
-- [ ] T016 Create main.go with Gin router setup: register all handlers, middleware, add X-User-Id header validation, configure Swagger, listen on :8080
+- [x] T005 Create models/errors.go defining Error and ErrorResponse types for API error responses in handler.go
+- [x] T006 Create models/marker.go defining MarkerCategory enum (General, GroupCategory1_Marker1, GroupCategory1_Marker2, GroupCategory2_Marker1) and string conversion helpers
+- [x] T007 Create models/marker.go with Marker struct (id, userId, name, category, latitude, longitude, description, createdAt, updatedAt) matching data-model.md specification
+- [x] T008 Create models/marker.go with CreateMarkerRequest, UpdateMarkerRequest, MarkerResponse structs with JSON tags and validation constraints from spec.md
+- [x] T009 Create repository/marker_repository.go interface IMarkerRepository with methods: CreateAsync, GetByIdAsync, GetByCategoryAsync, UpdateAsync, DeleteAsync per data-model.md
+- [x] T010 Create repository/marker_repository.go InMemoryMarkerRepository implementation using map[int64]map[string]Marker with sync.RWMutex for thread-safe access per data-model.md
+- [x] T011 Create service/marker_service.go interface IMarkerService with methods: CreateMarkerAsync, GetMarkerAsync, GetAllMarkersAsync, UpdateMarkerAsync, DeleteMarkerAsync per spec.md endpoints
+- [x] T012 Implement marker ID generation in service/marker_service.go: format "{Category}_v1.0_{UnixTimestamp}" using time.Now().Unix() per research.md decision #3
+- [x] T013 Create handlers/middleware.go with ExtractUserID middleware to parse X-User-Id header, validate positive integer, and inject into request context
+- [x] T014 Create handlers/marker_handler.go with HTTP handler functions: CreateMarker, GetMarker, GetAllMarkers, UpdateMarker, DeleteMarker matching API contract in contracts/markers.openapi.yaml
+- [x] T015 Create handlers/swagger_handler.go to serve Swagger UI at /swagger using swaggo/gin-swagger
+- [x] T016 Create main.go with Gin router setup: register all handlers, middleware, add X-User-Id header validation, configure Swagger, listen on :8080
 
 **Checkpoint**: Foundation ready - user story implementation can now begin independently in parallel
 
@@ -57,21 +57,21 @@
 
 ### Tests (TDD: Written First)
 
-- [ ] T017 [P] [US1] Create tests/unit/service_test.go TestGenerateMarkerID: verify ID format "{category}_v1.0_{timestamp}" with different categories and timestamps
-- [ ] T018 [P] [US1] Create tests/unit/service_test.go TestValidateCreateRequest: verify validation of required fields (name, category, latitude, longitude), coordinate ranges (±90, ±180)
-- [ ] T019 [P] [US1] Create tests/unit/repository_test.go TestCreateMarker: verify in-memory storage creates new user entry if needed, stores marker with correct ID, concurrent creates are thread-safe
-- [ ] T020 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerSuccess: POST /api/v1/markers returns 201, Location header set, response has all fields including generated ID
-- [ ] T021 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerValidation: missing required fields return 400, invalid category returns 400, coordinates out of range return 400, missing X-User-Id header returns 400
-- [ ] T022 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerOptionalDescription: POST without description field succeeds, response description is null (not empty string)
-- [ ] T023 [US1] Create tests/integration/markers_integration_test.go TestCreateAndRetrieveMarker: full flow POST /api/v1/markers then GET /api/v1/markers/{id} returns identical marker
+- [x] T017 [P] [US1] Create tests/unit/service_test.go TestGenerateMarkerID: verify ID format "{category}_v1.0_{timestamp}" with different categories and timestamps
+- [x] T018 [P] [US1] Create tests/unit/service_test.go TestValidateCreateRequest: verify validation of required fields (name, category, latitude, longitude), coordinate ranges (±90, ±180)
+- [x] T019 [P] [US1] Create tests/unit/repository_test.go TestCreateMarker: verify in-memory storage creates new user entry if needed, stores marker with correct ID, concurrent creates are thread-safe
+- [x] T020 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerSuccess: POST /api/v1/markers returns 201, Location header set, response has all fields including generated ID
+- [x] T021 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerValidation: missing required fields return 400, invalid category returns 400, coordinates out of range return 400, missing X-User-Id header returns 400
+- [x] T022 [US1] Create tests/contract/markers_api_test.go TestCreateMarkerOptionalDescription: POST without description field succeeds, response description is null (not empty string)
+- [x] T023 [US1] Create tests/integration/markers_integration_test.go TestCreateAndRetrieveMarker: full flow POST /api/v1/markers then GET /api/v1/markers/{id} returns identical marker
 
 ### Implementation
 
-- [ ] T024 [US1] Implement MarkerService.CreateMarkerAsync in service/marker_service.go: validate input, generate ID via GenerateMarkerID, set userId from context, set createdAt/updatedAt to time.Now().UTC(), call repository.CreateAsync
-- [ ] T025 [US1] Implement InMemoryMarkerRepository.CreateAsync in repository/marker_repository.go: acquire write lock, create user entry if needed (map[userId]), store marker with ID as key, return marker, ensure concurrent-safe with RWMutex
-- [ ] T026 [US1] Implement CreateMarker handler in handlers/marker_handler.go: extract X-User-Id, parse JSON request body, validate, call service.CreateMarkerAsync, return 201 with Location header and marshaled MarkerResponse
-- [ ] T027 [US1] Add request validation to handlers/marker_handler.go CreateMarker: verify latitude ∈ [-90, 90], longitude ∈ [-180, 180], name not empty, category is valid enum value per FR-005, FR-004
-- [ ] T028 [US1] Implement marker timestamp serialization in models/marker.go: use json.RawMessage or custom MarshalJSON for ISO 8601 UTC format (e.g., "2026-02-15T13:44:53Z") per data-model.md serialization
+- [x] T024 [US1] Implement MarkerService.CreateMarkerAsync in service/marker_service.go: validate input, generate ID via GenerateMarkerID, set userId from context, set createdAt/updatedAt to time.Now().UTC(), call repository.CreateAsync
+- [x] T025 [US1] Implement InMemoryMarkerRepository.CreateAsync in repository/marker_repository.go: acquire write lock, create user entry if needed (map[userId]), store marker with ID as key, return marker, ensure concurrent-safe with RWMutex
+- [x] T026 [US1] Implement CreateMarker handler in handlers/marker_handler.go: extract X-User-Id, parse JSON request body, validate, call service.CreateMarkerAsync, return 201 with Location header and marshaled MarkerResponse
+- [x] T027 [US1] Add request validation to handlers/marker_handler.go CreateMarker: verify latitude ∈ [-90, 90], longitude ∈ [-180, 180], name not empty, category is valid enum value per FR-005, FR-004
+- [x] T028 [US1] Implement marker timestamp serialization in models/marker.go: use json.RawMessage or custom MarshalJSON for ISO 8601 UTC format (e.g., "2026-02-15T13:44:53Z") per data-model.md serialization
 
 ---
 
@@ -83,23 +83,23 @@
 
 ### Tests (TDD: Written First)
 
-- [ ] T029 [P] [US2] Create tests/unit/repository_test.go TestGetByCategoryAsync: verify returns all markers when category=null, returns only matching category when specified, returns empty list for user with no markers, is thread-safe with concurrent reads
-- [ ] T030 [P] [US2] Create tests/unit/repository_test.go TestUserIsolation: verify user 1 cannot see user 2's markers, GetByCategoryAsync(userId=2) returns empty even if user 1 has markers
-- [ ] T031 [US2] Create tests/contract/markers_api_test.go TestGetAllMarkers: GET /api/v1/markers returns 200 with array of markers, response is empty array for user with no markers
-- [ ] T032 [US2] Create tests/contract/markers_api_test.go TestGetMarkersFilterByCategory: GET /api/v1/markers?category=2 returns only category 2 markers, GET ?category=999 returns empty (invalid category)
-- [ ] T033 [US2] Create tests/contract/markers_api_test.go TestUserIsolation: create markers for user 1, GET /api/v1/markers with X-User-Id=2 returns empty array (not user 1's markers)
-- [ ] T034 [US2] Create tests/contract/markers_api_test.go TestGetMarkerById: GET /api/v1/markers/{id} returns marker when it exists and belongs to user, returns 404 when marker doesn't exist or belongs to different user
-- [ ] T035 [US2] Create tests/integration/markers_integration_test.go TestCreateMultipleAndFilter: create 5 markers with mixed categories, filter by each category, verify correct subsets returned, user isolation maintained
+- [x] T029 [P] [US2] Create tests/unit/repository_test.go TestGetByCategoryAsync: verify returns all markers when category=null, returns only matching category when specified, returns empty list for user with no markers, is thread-safe with concurrent reads
+- [x] T030 [P] [US2] Create tests/unit/repository_test.go TestUserIsolation: verify user 1 cannot see user 2's markers, GetByCategoryAsync(userId=2) returns empty even if user 1 has markers
+- [x] T031 [US2] Create tests/contract/markers_api_test.go TestGetAllMarkers: GET /api/v1/markers returns 200 with array of markers, response is empty array for user with no markers
+- [x] T032 [US2] Create tests/contract/markers_api_test.go TestGetMarkersFilterByCategory: GET /api/v1/markers?category=2 returns only category 2 markers, GET ?category=999 returns empty (invalid category)
+- [x] T033 [US2] Create tests/contract/markers_api_test.go TestUserIsolation: create markers for user 1, GET /api/v1/markers with X-User-Id=2 returns empty array (not user 1's markers)
+- [x] T034 [US2] Create tests/contract/markers_api_test.go TestGetMarkerById: GET /api/v1/markers/{id} returns marker when it exists and belongs to user, returns 404 when marker doesn't exist or belongs to different user
+- [x] T035 [US2] Create tests/integration/markers_integration_test.go TestCreateMultipleAndFilter: create 5 markers with mixed categories, filter by each category, verify correct subsets returned, user isolation maintained
 
 ### Implementation
 
-- [ ] T036 [US2] Implement MarkerService.GetAllMarkersAsync in service/marker_service.go: call repository.GetByCategoryAsync with userId and optional category filter, map results to MarkerResponse DTOs, return collection
-- [ ] T037 [US2] Implement InMemoryMarkerRepository.GetByCategoryAsync in repository/marker_repository.go: acquire read lock, return all markers for userId if category null, filter by category if provided, return empty list if user not found
-- [ ] T038 [US2] Implement MarkerService.GetMarkerAsync in service/marker_service.go: call repository.GetByIdAsync(markerId, userId), map to MarkerResponse if found, return null if not found or user doesn't own marker
-- [ ] T039 [US2] Implement InMemoryMarkerRepository.GetByIdAsync in repository/marker_repository.go: acquire read lock, lookup markers[userId][markerId], return null if not found, ensure user isolation
-- [ ] T040 [US2] Implement GetAllMarkers handler in handlers/marker_handler.go: extract X-User-Id and optional category query param, validate category if provided, call service.GetAllMarkersAsync, return 200 with marshaled array
-- [ ] T041 [US2] Implement GetMarker handler in handlers/marker_handler.go: extract X-User-Id and markerId path param, call service.GetMarkerAsync, return 200 if found or 404 with error JSON if not found
-- [ ] T042 [US2] Add category validation in handlers/marker_handler.go: parse category query param as integer, validate is in [1,2,3,4], reject invalid categories with 400 or silently ignore per error handling decision
+- [x] T036 [US2] Implement MarkerService.GetAllMarkersAsync in service/marker_service.go: call repository.GetByCategoryAsync with userId and optional category filter, map results to MarkerResponse DTOs, return collection
+- [x] T037 [US2] Implement InMemoryMarkerRepository.GetByCategoryAsync in repository/marker_repository.go: acquire read lock, return all markers for userId if category null, filter by category if provided, return empty list if user not found
+- [x] T038 [US2] Implement MarkerService.GetMarkerAsync in service/marker_service.go: call repository.GetByIdAsync(markerId, userId), map to MarkerResponse if found, return null if not found or user doesn't own marker
+- [x] T039 [US2] Implement InMemoryMarkerRepository.GetByIdAsync in repository/marker_repository.go: acquire read lock, lookup markers[userId][markerId], return null if not found, ensure user isolation
+- [x] T040 [US2] Implement GetAllMarkers handler in handlers/marker_handler.go: extract X-User-Id and optional category query param, validate category if provided, call service.GetAllMarkersAsync, return 200 with marshaled array
+- [x] T041 [US2] Implement GetMarker handler in handlers/marker_handler.go: extract X-User-Id and markerId path param, call service.GetMarkerAsync, return 200 if found or 404 with error JSON if not found
+- [x] T042 [US2] Add category validation in handlers/marker_handler.go: parse category query param as integer, validate is in [1,2,3,4], reject invalid categories with 400 or silently ignore per error handling decision
 
 ---
 
