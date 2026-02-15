@@ -14,7 +14,6 @@ import (
 	"github.com/marker-service-go/repository"
 	"github.com/marker-service-go/service"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func setupRouter() *gin.Engine {
@@ -73,9 +72,9 @@ func TestGetMarkerIntegration(t *testing.T) {
 
 	// Create a marker first
 	createBody := models.CreateMarkerRequest{
-		Name:     "Test Marker",
-		Category: models.CategoryGeneral,
-		Latitude: 45.5,
+		Name:      "Test Marker",
+		Category:  models.CategoryGeneral,
+		Latitude:  45.5,
 		Longitude: -93.2,
 	}
 
@@ -111,9 +110,9 @@ func TestGetAllMarkersIntegration(t *testing.T) {
 	// Create multiple markers
 	for i := 1; i <= 3; i++ {
 		body := models.CreateMarkerRequest{
-			Name:     fmt.Sprintf("Marker %d", i),
-			Category: models.CategoryGeneral,
-			Latitude: 45.5,
+			Name:      fmt.Sprintf("Marker %d", i),
+			Category:  models.CategoryGeneral,
+			Latitude:  45.5,
 			Longitude: -93.2,
 		}
 
@@ -145,9 +144,9 @@ func TestUpdateMarkerIntegration(t *testing.T) {
 
 	// Create a marker
 	createBody := models.CreateMarkerRequest{
-		Name:     "Original Name",
-		Category: models.CategoryGeneral,
-		Latitude: 45.5,
+		Name:      "Original Name",
+		Category:  models.CategoryGeneral,
+		Latitude:  45.5,
 		Longitude: -93.2,
 	}
 
@@ -187,9 +186,9 @@ func TestDeleteMarkerIntegration(t *testing.T) {
 
 	// Create a marker
 	createBody := models.CreateMarkerRequest{
-		Name:     "Test Marker",
-		Category: models.CategoryGeneral,
-		Latitude: 45.5,
+		Name:      "Test Marker",
+		Category:  models.CategoryGeneral,
+		Latitude:  45.5,
 		Longitude: -93.2,
 	}
 
@@ -228,9 +227,9 @@ func TestUserIsolationIntegration(t *testing.T) {
 
 	// Create marker for user 1
 	body := models.CreateMarkerRequest{
-		Name:     "User 1 Marker",
-		Category: models.CategoryGeneral,
-		Latitude: 45.5,
+		Name:      "User 1 Marker",
+		Category:  models.CategoryGeneral,
+		Latitude:  45.5,
 		Longitude: -93.2,
 	}
 
